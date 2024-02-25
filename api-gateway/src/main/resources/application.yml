@@ -1,0 +1,47 @@
+server:
+  port: 8080
+
+security:
+  jwt-secret-key: ${JWT_SECRET_KEY:c5M_*QpAYR)?-#8k/+?E7*11}
+
+redis:
+  address: ${REDIS_ADDRESS:redis://localhost:6379}
+  #password: ${REDIS_PASSWORD:redis123}
+  connection-pool-size: 4
+  connection-minimum-idle-size: 2
+  token-time-to-live: 3600
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: swagger-ui
+          uri: forward:/swagger-ui/index.html
+          predicates:
+            - Path=/swagger-ui/*
+        - id: card-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/v1/cards/**
+          filters:
+            - AuthenticationFilter
+        - id: user-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/users/**, /api/v1/public/users/**
+          filters:
+            - AuthenticationFilter
+        - id: product-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/products/**, /api/v1/public/products/**
+          filters:
+            - AuthenticationFilter
+        - id: payment-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/v1/payments/**
+          filters:
+            - AuthenticationFilter
