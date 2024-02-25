@@ -2,3 +2,4 @@ rootProject.name = 'payment'
 
 include 'common-lib'
 include 'ms-user'
+include 'ms-card'

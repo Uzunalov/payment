@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: 21022024_create_cards_table
+      author: Hasan Uzunalov
+      changes:
+        - createTable:
+            tableName: cards
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: varchar(36)
+              - column:
+                  name: name
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: balance
+                  type: numeric
+              - column:
+                  name: expire_year
+                  type: integer
+              - column:
+                  name: expire_month
+                  type: integer
+              - column:
+                  name: cvv
+                  type: varchar(255)
+              - column:
+                  name: number
+                  type: varchar(255)
+              - column:
+                  name: last4
+                  type: varchar(4)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP(3)
+                  defaultValueComputed: now()
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP(3)
+                  defaultValueComputed: now()
