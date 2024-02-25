@@ -1,0 +1,125 @@
+version: "3"
+
+services:
+  db_redis:
+    container_name: banking_redis
+    image: redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  db_user:
+    container_name: payment_user_db
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  db_product:
+    container_name: payment_product_db
+    image: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  db_card:
+    container_name: payment_card_db
+    image: postgres
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  db_payment:
+    container_name: payment_ms_payment_db
+    image: postgres
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  ms-user:
+    container_name: payment_ms_user
+    image: payment/ms-user:0.1
+    ports:
+      - "8081:8081"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    build:
+      context: ms-user
+      dockerfile: Dockerfile
+    depends_on:
+      - db_user
+      - db_redis
+    network_mode: host
+
+  ms-product:
+    container_name: payment_ms_product
+    image: payment/ms-product:0.1
+    ports:
+      - "8082:8082"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    build:
+      context: ms-product
+      dockerfile: Dockerfile
+    depends_on:
+      - db_product
+    network_mode: host
+
+  ms-card:
+    container_name: payment_ms_card
+    image: payment/ms-card:0.1
+    ports:
+      - "8083:8083"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    build:
+      context: ms-card
+      dockerfile: Dockerfile
+    depends_on:
+      - db_card
+    network_mode: host
+
+  ms-payment:
+    container_name: payment_ms_payment
+    image: payment/ms-payment:0.1
+    ports:
+      - "8084:8084"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    build:
+      context: ms-payment
+      dockerfile: Dockerfile
+    depends_on:
+      - db_payment
+    network_mode: host
+
+  api-gateway:
+    container_name: payment_api_gateway
+    image: payment/api-gateway:0.1
+    ports:
+      - "8080:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    build:
+      context: api-gateway
+      dockerfile: Dockerfile
+    depends_on:
+      - db_redis
+    network_mode: host
