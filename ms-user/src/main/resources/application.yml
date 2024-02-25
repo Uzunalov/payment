@@ -1,0 +1,24 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: ms-user
+  liquibase:
+    change-log: classpath:liquibase/changelog-master.yml
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.postgresql.Driver
+    username: ${SPRING_DATASOURCE_USER:postgres}
+    password: ${SPRING_DATASOURCE_PASS:postgres}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
+
+security:
+  jwt-secret-key: ${JWT_SECRET_KEY:c5M_*QpAYR)?-#8k/+?E7*11}
+
+redis:
+  address: ${REDIS_ADDRESS:redis://localhost:6379}
+  #password: ${REDIS_PASSWORD:redis123}
+  connection-pool-size: 4
+  connection-minimum-idle-size: 2
+  token-time-to-live: 3600
