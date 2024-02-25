@@ -1,0 +1,18 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: ms-payment
+  liquibase:
+    change-log: classpath:liquibase/changelog-master.yml
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.postgresql.Driver
+    username: ${SPRING_DATASOURCE_USER:postgres}
+    password: ${SPRING_DATASOURCE_PASS:postgres}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5435/postgres}
+
+card-service:
+  base-url: http://localhost:8083/api/v1/internal/cards
+  payout-path: /payout
