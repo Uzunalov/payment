@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 21022024_create_products_table
+      author: Hasan Uzunalov
+      changes:
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: numeric
+              - column:
+                  name: stock
+                  type: integer
+              - column:
+                  name: created_at
+                  type: TIMESTAMP(3)
+                  defaultValueComputed: now()
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP(3)
+                  defaultValueComputed: now()

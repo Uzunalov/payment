@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 21022024_load_data_products_table
+      author: Hasan Uzunalov
+      changes:
+        - loadData:
+            encoding: UTF-8
+            file: liquibase/data/products.csv
+            separator: ;
+            tableName: products
